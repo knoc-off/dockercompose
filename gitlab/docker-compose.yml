@@ -1,0 +1,23 @@
+version: '3.6'
+services:
+  web:
+    image: 'gitlab/gitlab-ee:latest'
+    restart: always
+    #    hostname: 'gitlab.kobbl.co'
+    environment:
+      VIRTUAL_HOST: gitlab.kobbl.co
+      LETSENCRYPT_HOST: gitlab.kobbl.co
+      LETSENCRYPT_EMAIL: niko@skyline.sbs
+      GITLAB_OMNIBUS_CONFIG: |
+        external_url 'https://gitlab.kobbl.co'
+        # Add any other gitlab.rb configuration here, each on its own line
+    expose:
+      - 80
+      - 443
+      - 22
+    volumes:
+      - '/opt/serverfiles/gitlab/config:/etc/gitlab'
+      - '/opt/serverfiles/gitlab/logs:/var/log/gitlab'
+      - '/opt/serverfiles/gitlab/data:/var/opt/gitlab'
+    shm_size: '256m'
+
