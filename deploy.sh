@@ -4,5 +4,14 @@
 # by the end of this script you should have a fully working server 
 
 
+# for reverse proxy to work
+#docker network create nginx-proxy
+#docker compose up -d --build
 
+
+for i in ./sites/*
+do
+  echo "$i going up..."
+  ( cd $i && docker compose up -d --build )
+done
 
