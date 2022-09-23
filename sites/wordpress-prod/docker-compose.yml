@@ -5,7 +5,7 @@ services:
        - db
      image: wordpress:latest
      volumes:
-       - /opt/serverfiles/sites/prod/volumes/wordpress:/var/www/html
+       - /opt/dockerdata/sites/wordpress-prod/volumes/wordpress:/var/www/html
      working_dir: /var/www/html
      links:
        - db
@@ -24,7 +24,7 @@ services:
    db:
      image: mysql:5.7
      volumes:
-       - /opt/serverfiles/sites/prod/volumes/db_data:/var/lib/mysql
+       - /opt/dockerdata/sites/wordpress-prod/volumes/db_data:/var/lib/mysql
      restart: always
      environment:
        - MYSQL_ROOT_PASSWORD

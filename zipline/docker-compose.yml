@@ -1,0 +1,48 @@
+version: '3'
+services:
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DATABASE=postgres
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  zipline:
+    image: ghcr.io/diced/zipline
+    restart: always
+    expose:
+      - 80
+      - 443
+      - 3000
+    environment:
+      - CORE_HTTPS=true
+      - CORE_SECRET=JY4grYjMi%bB7tLND2ZnJ@Mp
+      - CORE_HOST=0.0.0.0
+      - CORE_PORT=3000
+      - CORE_DATABASE_URL=postgres://postgres:postgres@postgres/postgres
+      - CORE_LOGGER=true
+      - VIRTUAL_PORT=3000
+      - LETSENCRYPT_HOST
+      - VIRTUAL_HOST
+      - LETSENCRYPT_EMAIL
+    volumes:
+      - '/opt/dockerdata/zipline/uploads:/zipline/uploads'
+      - '/opt/dockerdata/zipline/public:/zipline/public'
+    depends_on:
+      - 'postgres'
+
+volumes:
+  pg_data:
+
+networks:
+  default:
+    name: nginx-proxy
+    external: true

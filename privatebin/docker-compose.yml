@@ -1,0 +1,18 @@
+version: '3.3'
+services:
+   privatebin:
+     image: privatebin/nginx-fpm-alpine
+     volumes:
+       - /opt/dockerdata/privatebin/data:/srv/data
+     expose:
+       - 8080
+     restart: always
+     environment:
+       - VIRTUAL_HOST
+       - LETSENCRYPT_HOST
+       - LETSENCRYPT_EMAIL
+
+networks:
+  default:
+    external: true
+    name: nginx-proxy
